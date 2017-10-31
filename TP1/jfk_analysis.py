@@ -32,4 +32,28 @@ with open('data.csv') as f:
     maxPage = max(PageCount)
     minPage = min(PageCount)
 
+    documentTypes = []
+    agencies = []
+    documentsAgencies = []
+    dicType = {}
+    dicAgency = {}
+    for row in splitlines:
+
+        if row[6] in dicType:
+            dicType[row[6]] += 1
+
+        if row[6] not in dicType:
+            dicType[row[6]] = 1
+
+        if row[4] in dicAgency:
+            dicAgency[row[4]] += 1
+
+        if row[4] not in dicAgency:
+            dicAgency[row[4]] = 1
+
+    print('number of documents types : ', len(dicType.keys()))
+    print('number of documents agencies : ', len(dicAgency.keys()))
+    print(dicType)
+    print(dicAgency)
+
     f.closed
