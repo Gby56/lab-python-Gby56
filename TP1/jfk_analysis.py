@@ -9,9 +9,8 @@ with open('data.csv') as f:
     splitlines = []
 
     for line in lol[1:]:
-        splitlines.append(line.split(';'))
         if len(line.split(';')) == fields:
-            continue
+            splitlines.append(line.split(';'))
         else:
             counter += 1
 
@@ -33,10 +32,9 @@ with open('data.csv') as f:
     avgPageCount = sum(PageCount)/len(PageCount)
     maxPage = max(PageCount)
     minPage = min(PageCount)
-
-    documentTypes = []
-    agencies = []
-    documentsAgencies = []
+    print(avgPageCount)
+    print(maxPage)
+    print(minPage)
     dicType = {}
     dicAgency = {}
 
@@ -66,6 +64,7 @@ with open('data.csv') as f:
     dates = []
     unsupportedformats = 0
     dicYears = {}
+
     for idx, row in enumerate(splitlines):
         try:
             date = datetime.datetime.strptime(row[5],'%m/%d/%Y')
