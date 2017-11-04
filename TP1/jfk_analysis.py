@@ -37,6 +37,7 @@ with open('data.csv') as f:
     documentsAgencies = []
     dicType = {}
     dicAgency = {}
+
     for row in splitlines:
 
         if row[6] in dicType:
@@ -52,8 +53,10 @@ with open('data.csv') as f:
             dicAgency[row[4]] = 1
 
     print('number of documents types : ', len(dicType.keys()))
-    print('number of documents agencies : ', len(dicAgency.keys()))
-    print(dicType)
-    print(dicAgency)
+    print('number of agencies : ', len(dicAgency.keys()))
+
+    for agency in dicAgency.items():
+
+        print(agency[0] + " : " + str(agency[1]))
 
     f.closed
