@@ -1,3 +1,5 @@
+import datetime
+
 with open('data.csv') as f:
     read_data = f.read()
     lol = read_data.splitlines()
@@ -55,8 +57,35 @@ with open('data.csv') as f:
     print('number of documents types : ', len(dicType.keys()))
     print('number of agencies : ', len(dicAgency.keys()))
 
+    print('number of documents per agency')
+
     for agency in dicAgency.items():
 
         print(agency[0] + " : " + str(agency[1]))
+
+    dates = []
+    unsupportedformats = 0
+    dicYears = {}
+    for idx, row in enumerate(splitlines):
+        try:
+            date = datetime.datetime.strptime(row[5],'%m/%d/%Y')
+            dates.append(date)
+
+            if date.year not in dicYears:
+                dicYears[date.year] = 1
+
+            if date.year in dicYears:
+                dicYears[date.year] += 1
+
+
+        except ValueError:
+            unsupportedformats+=1
+
+    print("There are %d documents with unsupported dates" % (unsupportedformats))
+    print("The oldest document is from %s" % (min(dates)))
+    print("The most recent document is from %s" % (max(dates)))
+
+    for year in dicYears.items():
+        print(str(year[0]) + " : " + str(year[1]))
 
     f.closed
