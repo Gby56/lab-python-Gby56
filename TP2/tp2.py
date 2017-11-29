@@ -1,67 +1,9 @@
-#This lab was done on Colaboratory (colab.research.google.com)
-
-
-#////////////////////////////////INITIAL SETUP
-
 # -*- coding: utf-8 -*-
-#!mkdir images
-#!mkdir out
-
-#!wget http://data.teklia.com/Images/HORAE/Latin_13263_btv1b9068094h.tar
-#!tar -xvf Latin_13263_btv1b9068094h.tar -C images/
-#!ls -lia images/Latin_13263_btv1b9068094h
-
-#!pip install joblib
-#!pip install tqdm
-
-#////////////////////////////////RUNNING EVERYTHING &
-#!python cluster_images.py --images-dir images/Latin_13263_btv1b9068094h/ --move-images out/
-
-#!tar cvf - out/ - > file.tar
-
-#from google.colab import files
-#files.download('file.tar')
-
-#////////////////////////////////UPLOAD TO GOOGLE DRIVE
-# Install the PyDrive wrapper & import libraries.
-# This only needs to be done once in a notebook.
-'''!pip install -U -q PyDrive
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
-from google.colab import auth
-from oauth2client.client import GoogleCredentials'''
-
-# Authenticate and create the PyDrive client.
-# This only needs to be done once in a notebook.
-'''auth.authenticate_user()
-gauth = GoogleAuth()
-gauth.credentials = GoogleCredentials.get_application_default()
-drive = GoogleDrive(gauth)'''
-
-# Create & upload a text file.
-'''uploaded = drive.CreateFile({'title': 'file.tar'})
-uploaded.SetContentFile('file.tar.gz')
-uploaded.Upload()
-print 'Uploaded file with ID', uploaded.get('id')'''
-
-
-'''
-#UPLOAD SCRIPT HERE TO EXECUTE VIA COMMAND LINE ON SERVER
-from google.colab import files
-
-uploaded = files.upload()
-with open("cluster_images.py", 'w') as f:
-    f.write(uploaded[uploaded.keys()[0]])
-'''
-
-
-
-# -*- coding: utf-8 -*-
-'''
+"""
 Cluster images based on visual similarity
 
 C. Kermorvant - 2017
-'''
+"""
 
 import argparse
 import logging
@@ -194,8 +136,9 @@ if __name__ == "__main__":
     X = np.array(data)
     logger.info("Running clustering")
 
+    # in the directory corresponding to its cluster
 
-    kmeans_model = KMeans(n_clusters=11, random_state=1).fit(X)
+    kmeans_model = KMeans(n_clusters=12, random_state=1).fit(X)
 
     if not args.images_dir:
         logger.info(msg="Cluster image directory was not specified, exiting")
