@@ -8,3 +8,36 @@ On the Latin_1168_btv1b8496559r.tar file, it seems that we have around 10 groups
 11 seems to give us the best results, even if covers should be in their own folder for example, but 12 is not optimal given the fact that some images are split between folders
 
 #####- For the best number of clusters, describe the content of each cluster.
+```
+0 Pages with embedded lettrines in it, aligned on the right
+```
+```
+1 Pages with repeated words aligned on the left
+```
+```
+2 Pages with full page illustration in geometric background, also the covers of the document
+```
+```
+3 Pages with embedded lettrines in it, aligned on the left
+```
+```
+4 Pages with text and illustration on the right of the text
+```
+```
+5 Sides of the book
+```
+```
+6 
+```
+```
+7 Pages with repeated words aligned on the right
+```
+```
+8 Empty pages
+```
+```
+9 Outside covers
+```
+```
+10 Pages with text and illustration on the left of the text
+```

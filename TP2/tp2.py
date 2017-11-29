@@ -138,7 +138,7 @@ if __name__ == "__main__":
 
     # in the directory corresponding to its cluster
 
-    kmeans_model = KMeans(n_clusters=12, random_state=1).fit(X)
+    kmeans_model = KMeans(n_clusters=11, random_state=1).fit(X)
 
     if not args.images_dir:
         logger.info(msg="Cluster image directory was not specified, exiting")
