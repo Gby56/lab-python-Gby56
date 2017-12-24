@@ -1,5 +1,7 @@
 # Answers for TP3
 
+# K-Nearest Neighbors algorithm (KNN)
+
 ## Q5
 ##### - Test the k-NN with k= 1 on both the training and the test set. Print the score produced by metrics.accuracy_score
 
@@ -133,3 +135,33 @@ Accuracy score : 0.930416666667
 K = 5 seems to be the best value because of the high accuracy score & minimum error between the predictions on the test and validation set
 ```
 ![plot_best_k_train_test_val](https://user-images.githubusercontent.com/6706472/34321300-ed6f2712-e80b-11e7-9d87-26cef228f6bb.png)
+
+# Logistic regression
+## Q7
+
+##### Train a Logistic Regression classifier on 80% and test on 20% of the samples. Report the accuracy and compare the the best result of the kNN classifier.
+```
+             precision    recall  f1-score   support
+
+          0       0.91      0.95      0.93      1169
+          1       0.88      0.95      0.91      1331
+          2       0.89      0.83      0.86      1230
+          3       0.86      0.78      0.82      1297
+          4       0.87      0.87      0.87      1130
+          5       0.81      0.78      0.79      1103
+          6       0.92      0.94      0.93      1192
+          7       0.85      0.87      0.86      1234
+          8       0.75      0.79      0.77      1141
+          9       0.81      0.79      0.80      1173
+
+avg / total       0.86      0.86      0.86     12000
+
+Accuracy score : 0.855833333333
+```
+
+## Q8
+##### Report the training and test set accuracies for the 1NN, 2NN, kNN (k being the best value for k you previously found) and the Logisitic Regresstion.
+##### Plot the training curves on a plot similar to :
+![logisticcurve](https://user-images.githubusercontent.com/6706472/34325518-0d165c56-e894-11e7-83fb-af7b9eddfea2.png)
+
+![knncurve](https://user-images.githubusercontent.com/6706472/34325524-4e43326c-e894-11e7-8570-67e815a8b88b.png)

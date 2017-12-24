@@ -114,7 +114,7 @@ def getTrainingError(kvalue, X_test, y_test, X_train, y_train, logging):
     print("-------------------- " + "| K = " +str(kvalue)+ "| ---------------------")
 
     #sorry for the logging variable but idc and it's easier
-    knn = neighbors.KNeighborsClassifier(n_neighbors=kvalue, p=2, metric='euclidean',  n_jobs=-1)
+    knn = neighbors.KNeighborsClassifier(n_neighbors=kvalue, n_jobs=-1)
 
     # Do Training
     t0 = time.time()
@@ -146,7 +146,7 @@ def getTrainingError(kvalue, X_test, y_test, X_train, y_train, logging):
 
         print("Report for prediction on training set")
         print(metrics.classification_report(y_train, predicted2))
-    acc_train = metrics.accuracy_score(y_train, predicted2, normalize=True)
+    acc_train = knn.score(X_train, y_train)
 
     if logging:
         print("Accuracy score : " + str(metrics.accuracy_score(y_train, predicted2, normalize=True)) + "\n")
@@ -332,7 +332,7 @@ if __name__ == "__main__":
     #endregion
 
     if args.nearest_neighbors:
-        X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
+        X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, shuffle=False)
 
         # create KNN classifier with args.nearest_neighbors as a parameter
         logger.info('Use kNN classifier with k = {}'.format(args.nearest_neighbors))
@@ -341,7 +341,7 @@ if __name__ == "__main__":
         if args.learning_curve:
             f, ax = plt.subplots(1)
 
-            for kk in [1,3,5,7,9]:
+            for kk in [1,2,5]:
                 logger.info('Learning curve for KNN with k = ' + str(kk))
 
                 percentage = list(range(0, 100, 10))
@@ -367,12 +367,13 @@ if __name__ == "__main__":
                     accuracy_samples_test.append(res[0])
                     accuracy_samples_train.append(res[1])
 
-                ax.plot(num_samples, accuracy_samples_train,label=str('k = '+ str(kk)))
-                ax.plot(num_samples, accuracy_samples_test, label=str('k = '+ str(kk)))
+                ax.plot(num_samples, accuracy_samples_train,label=str('Train k = '+ str(kk)))
+                ax.plot(num_samples, accuracy_samples_test, label=str('Test k = '+ str(kk)))
             plt.ylabel('Accuracy')
             plt.xlabel('Train set size')
-            plt.title('KNN with k=1,2,5')
-            plt.legend(loc=0,ncol=3, mode="expand", borderaxespad=0.)
+            plt.title('KNN with k=1,2,5 (5 is best K)')
+            plt.legend(ncol=3, mode="expand", borderaxespad=0.)
+            plt.legend(loc="best")
             plt.show()
 
         if args.testing_curve:
@@ -409,7 +410,7 @@ if __name__ == "__main__":
             X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
 
             for p in percentage:
-                num_samples.append(math.floor(len(X_train) / 100) * p)
+                num_samples.append(math.floor(len(X_train) / 100 * p))
             accuracy_samples_test = []
             accuracy_samples_train = []
 
