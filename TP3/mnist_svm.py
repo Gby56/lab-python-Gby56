@@ -85,16 +85,115 @@ if __name__ == "__main__":
     #region define parser
     parser = argparse.ArgumentParser(
         description='Extract features, train a classifier on images and test the classifier')
-    input_group = parser.add_mutually_exclusive_group(required=True)
-    input_group.add_argument('--images-list',
-                             help='file containing the image path and image class, one per line, comma separated')
+    input_group = parser.add_mutually_exclusive_group()
+    input_group.add_argument('--images-list', help='file containing the image path and image class, one per line, comma separated')
     input_group.add_argument('--load-features', help='read features and class from pickle file')
+
     parser.add_argument('--save-features', help='save features in pickle format')
     parser.add_argument('--limit-samples', type=int, help='limit the number of samples to consider for training')
     parser.add_argument('--features-only', action='store_true', help='only extract features, do not train classifiers')
-    parser.add_argument('--kernel', type=str, required=True)
+
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument('--kernel', type=str)
+    mode.add_argument('--usps', action='store_true')
     args = parser.parse_args()
     #endregion
+
+    if args.usps:
+        all = []
+        # read features from to_pickle
+        with (open('feat.pkl', "rb")) as openfile:
+            try:
+                all.append(pickle.load(openfile))
+            except EOFError:
+                print("error")
+
+        # loaded_features = []
+        # all_df_temp = []
+
+        featclass = np.array(all[0])
+
+        '''
+        for entry in range(0,len(all[0])):
+            #loaded_features.append(all[0][entry].features)
+            all_df_temp.append(all[0][entry].clas)
+
+
+        all_df_temp = np.array(all_df_temp)
+        all_df = pd.DataFrame([])
+        all_df['Clas'] = pd.Series(all_df_temp)
+        '''
+
+        logger.info("Loaded {} file".format('feat.pkl'))
+
+        allusps = []
+        # read features from to_pickle
+        with (open('usps.pkl', "rb")) as openfile:
+            try:
+                allusps.append(pickle.load(openfile))
+            except EOFError:
+                print("error")
+
+        # loaded_features = []
+        # all_df_temp = []
+
+        featclassusps = np.array(allusps[0])
+
+        '''
+        for entry in range(0,len(all[0])):
+            #loaded_features.append(all[0][entry].features)
+            all_df_temp.append(all[0][entry].clas)
+
+
+        all_df_temp = np.array(all_df_temp)
+        all_df = pd.DataFrame([])
+        all_df['Clas'] = pd.Series(all_df_temp)
+        '''
+
+        logger.info("Loaded {} file".format('usps.pkl'))
+
+        # region load data in variables
+        X = []
+        Y = []
+        np.random.shuffle(featclass)
+        for ft in featclass:
+            X.append(ft.features)
+            Y.append(ft.clas)
+
+        # endregion
+
+        # region load data in variables
+        Xusps = []
+        Yusps = []
+        np.random.shuffle(featclassusps)
+        for ft in featclassusps:
+            Xusps.append(ft.features)
+            Yusps.append(ft.clas)
+
+        # endregion
+
+        print("RBF Kernel training on MNIST and testing on USPS\n")
+
+        X = StandardScaler(with_mean=True, with_std=True).fit_transform(X)
+        Xusps = StandardScaler(with_mean=True, with_std=True).fit_transform(Xusps)
+
+        svc = SVC(kernel='rbf', gamma=0.05, C=10)
+        #parameters = {'gamma':[0.05,0.1,0.5],'C': [1, 10]}
+        #clf = GridSearchCV(svc, parameters,n_jobs=-1,verbose=1)
+
+        svc.fit(X, Y)
+
+        print("Predicting USPS features to classes...")
+        pred = svc.predict(Xusps)
+
+        for p in range(0,len(pred)):
+            print(str(pred[p]) + "  |  " + str(Yusps[p]))
+            if(p%10==0):
+                print("predicted   |   real")
+
+        print("USPS set : ")
+        print(print(metrics.classification_report(Yusps, pred)))
+        print("Accuracy : " + str(accuracy_score(Yusps,pred,normalize=True)))
 
     if args.load_features:
         all = []
@@ -124,7 +223,7 @@ if __name__ == "__main__":
         logger.info("Loaded {} file".format(args.load_features))
 
     elif args.images_list:
-        all_df = pd.read_csv(args.images_list, names=['Filename', 'Clas'])
+        all_df = pd.read_csv(os.path.dirname(os.path.realpath(__file__)) + args.images_list, names=['Filename', 'Clas'], sep=' ')
         # Load the image list from CSV file using pd.read_csv
         # see the doc for the option since there is no header ;
         # specify the column names :  filename , class
@@ -186,6 +285,8 @@ if __name__ == "__main__":
     img2.save("onchenew.png")
     '''
     #endregion
+
+
 
     if args.kernel == 'linear':
         print("Linear Kernel \n")

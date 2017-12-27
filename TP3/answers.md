@@ -445,3 +445,32 @@ None
 Accuracy : 0.9075
 Best params : {'C': 10, 'gamma': 0.05} using 3 folds with a best score of 0.848125
 ```
+
+# Q12 BONUS
+Download the USPS database and test your best classifier trained on MNIST on the USPS test set. Report the accuracy. Propose one or more solutions to improve this result and test them.
+```
+2017-12-27 18:53:34,469 - INFO - Loaded feat.pkl file
+2017-12-27 18:53:34,492 - INFO - Loaded usps.pkl file
+RBF Kernel training on MNIST and testing on USPS
+
+Predicting USPS features to classes...
+USPS set : 
+             precision    recall  f1-score   support
+
+          0       0.79      0.27      0.40      1194
+          1       0.92      0.19      0.32      1005
+          2       0.23      0.94      0.37       731
+          3       0.26      0.17      0.20       658
+          4       0.36      0.42      0.39       652
+          5       0.27      0.12      0.17       556
+          6       0.59      0.06      0.12       664
+          7       0.24      0.44      0.31       645
+          8       0.18      0.28      0.22       542
+          9       0.08      0.01      0.02       644
+
+avg / total       0.45      0.29      0.27      7291
+
+None
+Accuracy : 0.294061171307
+```
+
