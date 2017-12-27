@@ -472,5 +472,6 @@ avg / total       0.45      0.29      0.27      7291
 
 None
 Accuracy : 0.294061171307
+on the second run : 0.29392401591
 ```
 

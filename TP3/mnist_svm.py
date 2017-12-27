@@ -188,8 +188,8 @@ if __name__ == "__main__":
 
         for p in range(0,len(pred)):
             print(str(pred[p]) + "  |  " + str(Yusps[p]))
-            if(p%10==0):
-                print("predicted   |   real")
+            if(p%50==0):
+                print("pred|real")
 
         print("USPS set : ")
         print(print(metrics.classification_report(Yusps, pred)))
