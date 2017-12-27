@@ -350,3 +350,98 @@ Knn
 ![testcurveknn5](https://user-images.githubusercontent.com/6706472/34384287-8ccbb7c8-eb1b-11e7-8845-0e8ed63ba547.png)
 Logistic regression
 ![testcurvelog](https://user-images.githubusercontent.com/6706472/34384288-8ce76004-eb1b-11e7-98d8-99845b988a38.png)
+
+# Support Vector Machines
+
+## Q9
+##### Train SVM with a linear kernel on MNIST with the features previously computed (8x8 subresolution). Use svm.SVC with the option kernel='linear' Report the train and test error rate
+
+```
+TEST set : 
+             precision    recall  f1-score   support
+
+          0       0.94      0.95      0.95      1128
+          1       0.93      0.96      0.94      1346
+          2       0.90      0.92      0.91      1192
+          3       0.86      0.87      0.87      1221
+          4       0.89      0.91      0.90      1200
+          5       0.86      0.83      0.85      1082
+          6       0.94      0.95      0.95      1163
+          7       0.87      0.88      0.88      1284
+          8       0.87      0.84      0.85      1154
+          9       0.87      0.81      0.84      1230
+
+avg / total       0.89      0.89      0.89     12000
+
+None
+Accuracy : 0.893333333333
+TRAIN set : 
+             precision    recall  f1-score   support
+
+          0       0.95      0.96      0.96      4795
+          1       0.93      0.97      0.95      5396
+          2       0.91      0.91      0.91      4766
+          3       0.87      0.87      0.87      4910
+          4       0.90      0.93      0.91      4642
+          5       0.86      0.86      0.86      4339
+          6       0.95      0.96      0.96      4755
+          7       0.89      0.89      0.89      4981
+          8       0.87      0.82      0.84      4697
+          9       0.87      0.83      0.85      4719
+
+avg / total       0.90      0.90      0.90     48000
+
+None
+Accuracy : 0.901416666667
+```
+##### Train a SVM classifier with a RBF kernel on MNIST with the features previously computed (8x8 subresolution). Use svm.SVC with the option kernel='RBF' with default values for C and gamma. Report its accuracy on the test set.
+
+```
+RBF Kernel 
+
+TEST set : 
+             precision    recall  f1-score   support
+
+          0       0.95      0.95      0.95        40
+          1       0.85      0.94      0.89        49
+          2       0.78      0.93      0.85        42
+          3       0.89      0.74      0.81        46
+          4       0.87      0.89      0.88        37
+          5       0.86      0.86      0.86        37
+          6       0.97      0.82      0.89        38
+          7       0.82      0.84      0.83        37
+          8       0.81      0.81      0.81        36
+          9       0.81      0.79      0.80        38
+
+avg / total       0.86      0.86      0.86       400
+
+None
+Accuracy : 0.8575
+```
+## Q11
+The gamma and C parameters must be optimized for the RBF kernel. Use GridSearchCV to find the best parameters for C in [0.5,1,5] and gamma in [0.05,0.1,0.5]. Report the accuracy of the best model on the test set.
+```
+RBF Kernel 
+
+Fitting 3 folds for each of 6 candidates, totalling 18 fits
+[Parallel(n_jobs=-1)]: Done  18 out of  18 | elapsed:    1.4s finished
+TEST set : 
+             precision    recall  f1-score   support
+
+          0       0.95      0.95      0.95        44
+          1       0.96      0.94      0.95        50
+          2       0.75      0.92      0.83        36
+          3       0.95      0.85      0.90        41
+          4       0.95      0.93      0.94        40
+          5       0.90      0.90      0.90        21
+          6       0.93      0.93      0.93        43
+          7       0.87      0.87      0.87        39
+          8       0.91      0.86      0.89        37
+          9       0.90      0.90      0.90        49
+
+avg / total       0.91      0.91      0.91       400
+
+None
+Accuracy : 0.9075
+Best params : {'C': 10, 'gamma': 0.05} using 3 folds with a best score of 0.848125
+```

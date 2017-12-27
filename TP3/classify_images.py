@@ -513,6 +513,7 @@ if __name__ == "__main__":
             plt.errorbar(num_samples, meanaccuracies, yerr=stdaccuracies, fmt='o', ecolor='r')
             plt.ylabel('Accuracy')
             plt.xlabel('Train set size')
+            plt.title('Logistic regression testing curve')
             plt.show()
 
     else:
