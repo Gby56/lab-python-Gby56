@@ -165,3 +165,188 @@ Accuracy score : 0.855833333333
 ![logisticcurve](https://user-images.githubusercontent.com/6706472/34325518-0d165c56-e894-11e7-83fb-af7b9eddfea2.png)
 
 ![knncurve](https://user-images.githubusercontent.com/6706472/34325524-4e43326c-e894-11e7-8570-67e815a8b88b.png)
+
+## Q10
+
+##### Report the mean and standard deviation (use np.mean and np.std) of the test set accuracy for the 1NN, 2NN, kNN (k being the best value for k you previously found) and the Logisitic Regresstion.
+Knn
+```
+-------------------- | K = 1| ---------------------
+Testing 10 times test set with 1 % samples from test set
+2017-12-27 15:22:19,646 - INFO - Use kNN classifier with k = 1
+/home/gby/PycharmProjects/lab-python-Gby56/ENV/lib/python3.5/site-packages/sklearn/model_selection/_split.py:2026: FutureWarning: From version 0.21, test_size will always complement train_size unless both are specified.
+  FutureWarning)
+Mean accuracy : 0.866666666667
+Standard deviation : 0.163299316186
+
+Testing 10 times test set with 10 % samples from test set
+Mean accuracy : 0.876923076923
+Standard deviation : 0.0615384615385
+
+Testing 10 times test set with 20 % samples from test set
+Mean accuracy : 0.817307692308
+Standard deviation : 0.0432157789505
+
+Testing 10 times test set with 30 % samples from test set
+Mean accuracy : 0.838461538462
+Standard deviation : 0.0276162297802
+
+Testing 10 times test set with 40 % samples from test set
+Mean accuracy : 0.8375
+Standard deviation : 0.0305430387967
+
+Testing 10 times test set with 50 % samples from test set
+Mean accuracy : 0.850769230769
+Standard deviation : 0.0246153846154
+
+Testing 10 times test set with 60 % samples from test set
+Mean accuracy : 0.821153846154
+Standard deviation : 0.0165801502005
+
+Testing 10 times test set with 70 % samples from test set
+Mean accuracy : 0.829120879121
+Standard deviation : 0.00996613030067
+
+Testing 10 times test set with 80 % samples from test set
+Mean accuracy : 0.831730769231
+Standard deviation : 0.00775217091183
+
+Testing 10 times test set with 90 % samples from test set
+Mean accuracy : 0.82735042735
+Standard deviation : 0.00512820512821
+
+-------------------- | K = 2| ---------------------
+Testing 10 times test set with 1 % samples from test set
+Mean accuracy : 0.8
+Standard deviation : 0.163299316186
+
+Testing 10 times test set with 10 % samples from test set
+Mean accuracy : 0.819230769231
+Standard deviation : 0.0621365170054
+
+Testing 10 times test set with 20 % samples from test set
+Mean accuracy : 0.830769230769
+Standard deviation : 0.0453454850867
+
+Testing 10 times test set with 30 % samples from test set
+Mean accuracy : 0.815384615385
+Standard deviation : 0.0381181249931
+
+Testing 10 times test set with 40 % samples from test set
+Mean accuracy : 0.829807692308
+Standard deviation : 0.0243442094253
+
+Testing 10 times test set with 50 % samples from test set
+Mean accuracy : 0.833846153846
+Standard deviation : 0.0182682185954
+
+Testing 10 times test set with 60 % samples from test set
+Mean accuracy : 0.828205128205
+Standard deviation : 0.0185344003779
+
+Testing 10 times test set with 70 % samples from test set
+Mean accuracy : 0.83021978022
+Standard deviation : 0.0123961694205
+
+Testing 10 times test set with 80 % samples from test set
+Mean accuracy : 0.825480769231
+Standard deviation : 0.0136067035559
+
+Testing 10 times test set with 90 % samples from test set
+Mean accuracy : 0.82735042735
+Standard deviation : 0.00815332650784
+
+-------------------- | K = 5| ---------------------
+Testing 10 times test set with 1 % samples from test set
+Mean accuracy : 0.766666666667
+Standard deviation : 0.152752523165
+
+Testing 10 times test set with 10 % samples from test set
+Mean accuracy : 0.819230769231
+Standard deviation : 0.0894592565355
+
+Testing 10 times test set with 20 % samples from test set
+Mean accuracy : 0.815384615385
+Standard deviation : 0.0300394218304
+
+Testing 10 times test set with 30 % samples from test set
+Mean accuracy : 0.852564102564
+Standard deviation : 0.0304740110872
+
+Testing 10 times test set with 40 % samples from test set
+Mean accuracy : 0.832692307692
+Standard deviation : 0.0202608726016
+
+Testing 10 times test set with 50 % samples from test set
+Mean accuracy : 0.835384615385
+Standard deviation : 0.0250915483543
+
+Testing 10 times test set with 60 % samples from test set
+Mean accuracy : 0.836538461538
+Standard deviation : 0.012246777676
+
+Testing 10 times test set with 70 % samples from test set
+Mean accuracy : 0.836813186813
+Standard deviation : 0.0173838373841
+
+Testing 10 times test set with 80 % samples from test set
+Mean accuracy : 0.839423076923
+Standard deviation : 0.0122005553274
+
+Testing 10 times test set with 90 % samples from test set
+Mean accuracy : 0.836752136752
+Standard deviation : 0.00418716195348
+```
+
+Logistic regression :
+```
+testing 10 times test set with 1 % samples from test set
+Mean accuracy : 0.833333333333
+Standard deviation : 0.22360679775
+
+testing 10 times test set with 10 % samples from test set
+Mean accuracy : 0.796153846154
+Standard deviation : 0.0730769230769
+
+testing 10 times test set with 20 % samples from test set
+Mean accuracy : 0.798076923077
+Standard deviation : 0.0517804308378
+
+testing 10 times test set with 30 % samples from test set
+Mean accuracy : 0.814102564103
+Standard deviation : 0.0418388945438
+
+testing 10 times test set with 40 % samples from test set
+Mean accuracy : 0.8
+Standard deviation : 0.0260858845505
+
+testing 10 times test set with 50 % samples from test set
+Mean accuracy : 0.821538461538
+Standard deviation : 0.027261607918
+
+testing 10 times test set with 60 % samples from test set
+Mean accuracy : 0.802564102564
+Standard deviation : 0.0268619574869
+
+testing 10 times test set with 70 % samples from test set
+Mean accuracy : 0.802747252747
+Standard deviation : 0.0144224228004
+
+testing 10 times test set with 80 % samples from test set
+Mean accuracy : 0.804326923077
+Standard deviation : 0.00913461538462
+
+testing 10 times test set with 90 % samples from test set
+Mean accuracy : 0.805128205128
+Standard deviation : 0.00667542707342
+```
+
+##### Plot the testing curves (mean accuracy) on a plot with error bars (standard deviation of the accuracy), for example using the pandas plot function
+Knn
+![testcurveknn1](https://user-images.githubusercontent.com/6706472/34384285-8c8e4e7e-eb1b-11e7-85d0-b4ca1d290827.png)
+
+![testcurveknn2](https://user-images.githubusercontent.com/6706472/34384286-8ca8a558-eb1b-11e7-89d5-372024709029.png)
+
+![testcurveknn5](https://user-images.githubusercontent.com/6706472/34384287-8ccbb7c8-eb1b-11e7-8845-0e8ed63ba547.png)
+Logistic regression
+![testcurvelog](https://user-images.githubusercontent.com/6706472/34384288-8ce76004-eb1b-11e7-98d8-99845b988a38.png)

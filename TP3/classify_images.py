@@ -377,7 +377,46 @@ if __name__ == "__main__":
             plt.show()
 
         if args.testing_curve:
-            print("hello")
+            percentage = list(range(0, 100, 10))
+            percentage[0] = 1
+            X_train, X_test, y_train, y_test = train_test_split(X, Y, train_size=0.8)
+            num_samples = []
+
+            for p in percentage:
+                num_samples.append(len(X_test)*(p/100))
+            meanaccuracies = []
+            stdaccuracies = []
+            accuracies = []
+
+            for kk in [1,2,5]:
+                print("-------------------- " + "| K = " + str(kk) + "| ---------------------")
+                for i in range(0, len(num_samples)):
+                    print("Testing 10 times test set with " + str(percentage[i]) + " % samples from test set")
+                    for y in range(0,10):
+
+                        X_nothing, X_test_temp, y_nothing, y_test_temp = train_test_split(X_test, y_test, test_size=percentage[i]/100)
+
+                        knn = neighbors.KNeighborsClassifier(kk, n_jobs=-1)
+
+                        # we create an instance of Neighbours Classifier and fit the data.
+                        knn.fit(X_train, y_train)
+
+                        result2 = knn.predict(X_test_temp)
+
+                        accuracies.append(metrics.accuracy_score(y_test_temp, result2, normalize=True))
+                    meanaccuracies.append(np.mean(accuracies))
+                    stdaccuracies.append(np.std(accuracies))
+                    print("Mean accuracy : " + str(np.mean(accuracies)))
+                    print("Standard deviation : " + str(np.std(accuracies)) + str("\n"))
+                    accuracies=[]
+
+                plt.errorbar(num_samples, meanaccuracies, yerr=stdaccuracies, fmt='o', ecolor='r')
+                plt.ylabel('Accuracy')
+                plt.xlabel('Train set size')
+                plt.title('Knn testing curve, k = ' + str(kk))
+                plt.show()
+                meanaccuracies=[]
+                stdaccuracies=[]
 
         if not args.testing_curve and not args.learning_curve:
         #TRY WITH K=1
@@ -438,7 +477,43 @@ if __name__ == "__main__":
             plt.show()
 
         if args.testing_curve:
-            print("hello")
+            percentage = list(range(0, 100, 10))
+            percentage[0] = 1
+            num_samples = []
+            X_train, X_test, y_train, y_test = train_test_split(X, Y, train_size=0.8)
+
+            for p in percentage:
+                num_samples.append(p/100)
+
+            meanaccuracies = []
+            stdaccuracies = []
+            accuracies = []
+
+            for i in range(0, len(num_samples)):
+                print("testing 10 times test set with " + str(percentage[i]) + " % samples from test set")
+                for y in range(0,10):
+
+                    X_nothing, X_test_temp, y_nothing, y_test_temp = train_test_split(X_test, y_test, test_size=num_samples[i])
+
+                    logreg = linear_model.LogisticRegression()
+
+                    # we create an instance of Neighbours Classifier and fit the data.
+                    logreg.fit(X_train, y_train)
+
+                    result2 = logreg.predict(X_test_temp)
+
+                    accuracies.append(metrics.accuracy_score(y_test_temp, result2, normalize=True))
+                meanaccuracies.append(np.mean(accuracies))
+                stdaccuracies.append(np.std(accuracies))
+                print("Mean accuracy : " + str(np.mean(accuracies)))
+                print("Standard deviation : " + str(np.std(accuracies)) + str("\n"))
+                accuracies=[]
+
+
+            plt.errorbar(num_samples, meanaccuracies, yerr=stdaccuracies, fmt='o', ecolor='r')
+            plt.ylabel('Accuracy')
+            plt.xlabel('Train set size')
+            plt.show()
 
     else:
         logger.error('No classifier specified')
