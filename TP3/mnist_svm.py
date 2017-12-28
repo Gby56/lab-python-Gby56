@@ -2,7 +2,7 @@
 """
 Classify digit images
 
-C. Kermorvant - 2017
+G.Marquet 2017
 """
 
 import pickle
@@ -29,12 +29,13 @@ from joblib import Parallel, delayed
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
 
-# Setup logging
+#region Setup logging
 logger = logging.getLogger('mnist_svm.py')
 logger.setLevel(logging.INFO)
 ch = logging.StreamHandler()
 ch.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
 logger.addHandler(ch)
+#endregion
 
 def image_loader(entry):
     path = entry[0]
@@ -82,6 +83,7 @@ class FeatureClass:
         return(str(self.clas) + " | " + str(self.features))
 
 if __name__ == "__main__":
+
     #region define parser
     parser = argparse.ArgumentParser(
         description='Extract features, train a classifier on images and test the classifier')
@@ -102,6 +104,9 @@ if __name__ == "__main__":
     if args.usps:
         all = []
         # read features from to_pickle
+        logger.info("Loading MNIST pickle with features")
+        t0 = time.time()
+
         with (open('feat.pkl', "rb")) as openfile:
             try:
                 all.append(pickle.load(openfile))
@@ -110,6 +115,7 @@ if __name__ == "__main__":
 
         # loaded_features = []
         # all_df_temp = []
+        logger.info("Loading done in %0.3fs" % (time.time() - t0))
 
         featclass = np.array(all[0])
 
@@ -124,9 +130,11 @@ if __name__ == "__main__":
         all_df['Clas'] = pd.Series(all_df_temp)
         '''
 
-        logger.info("Loaded {} file".format('feat.pkl'))
 
         allusps = []
+        logger.info("Loading USPS pickle with features")
+        t0 = time.time()
+
         # read features from to_pickle
         with (open('usps.pkl', "rb")) as openfile:
             try:
@@ -136,6 +144,7 @@ if __name__ == "__main__":
 
         # loaded_features = []
         # all_df_temp = []
+        logger.info("Loading done in %0.3fs" % (time.time() - t0))
 
         featclassusps = np.array(allusps[0])
 
@@ -150,7 +159,6 @@ if __name__ == "__main__":
         all_df['Clas'] = pd.Series(all_df_temp)
         '''
 
-        logger.info("Loaded {} file".format('usps.pkl'))
 
         # region load data in variables
         X = []
@@ -180,8 +188,12 @@ if __name__ == "__main__":
         svc = SVC(kernel='rbf', gamma=0.05, C=10)
         #parameters = {'gamma':[0.05,0.1,0.5],'C': [1, 10]}
         #clf = GridSearchCV(svc, parameters,n_jobs=-1,verbose=1)
+        t0 = time.time()
+        logger.info("Training SVC with RBF kernel on " + str(len(X)) + " hand written numbers from MNIST")
 
         svc.fit(X, Y)
+
+        logger.info("Training done in %0.3fs" % (time.time() - t0))
 
         print("Predicting USPS features to classes...")
         pred = svc.predict(Xusps)
@@ -192,11 +204,15 @@ if __name__ == "__main__":
                 print("pred|real")
 
         print("USPS set : ")
-        print(print(metrics.classification_report(Yusps, pred)))
+        print(metrics.classification_report(Yusps, pred))
         print("Accuracy : " + str(accuracy_score(Yusps,pred,normalize=True)))
+        sys.exit()
 
     if args.load_features:
         all = []
+        t0 = time.time()
+        logger.info("Loading pickle with features")
+
         # read features from to_pickle
         with (open(args.load_features, "rb")) as openfile:
             try:
@@ -206,6 +222,9 @@ if __name__ == "__main__":
 
         # loaded_features = []
         # all_df_temp = []
+
+        logger.info("Loading done in %0.3fs" % (time.time() - t0))
+
 
         featclass = np.array(all[0])
 
@@ -219,8 +238,6 @@ if __name__ == "__main__":
         all_df = pd.DataFrame([])
         all_df['Clas'] = pd.Series(all_df_temp)
         '''
-
-        logger.info("Loaded {} file".format(args.load_features))
 
     elif args.images_list:
         all_df = pd.read_csv(os.path.dirname(os.path.realpath(__file__)) + args.images_list, names=['Filename', 'Clas'], sep=' ')
@@ -286,8 +303,6 @@ if __name__ == "__main__":
     '''
     #endregion
 
-
-
     if args.kernel == 'linear':
         print("Linear Kernel \n")
 
@@ -296,16 +311,19 @@ if __name__ == "__main__":
         X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, shuffle=False)
 
         clf = SVC(kernel='linear')
+        print("Training Linear SVC...")
+        t0 = time.time()
         clf.fit(X_train, y_train)
+        logger.info("Training done in %0.3fs" % (time.time() - t0))
 
         pred = clf.predict(X_test)
         print("TEST set : ")
-        print(print(metrics.classification_report(y_test, pred)))
+        print(metrics.classification_report(y_test, pred))
         print("Accuracy : " + str(accuracy_score(y_test,pred,normalize=True)))
 
         pred = clf.predict(X_train)
         print("TRAIN set : ")
-        print(print(metrics.classification_report(y_train, pred)))
+        print(metrics.classification_report(y_train, pred))
         print("Accuracy : " + str(accuracy_score(y_train,pred,normalize=True)))
 
     elif args.kernel == 'RBF':
@@ -322,7 +340,7 @@ if __name__ == "__main__":
 
         pred = clf.predict(X_test)
         print("TEST set : ")
-        print(print(metrics.classification_report(y_test, pred)))
+        print(metrics.classification_report(y_test, pred))
         print("Accuracy : " + str(accuracy_score(y_test,pred,normalize=True)))
         print("Best params : " + str(clf.best_params_) + " using " + str(clf.n_splits_) + " folds with a best score of " + str(clf.best_score_))
 

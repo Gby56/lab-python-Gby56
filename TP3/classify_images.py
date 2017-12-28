@@ -2,7 +2,7 @@
 """
 Classify digit images
 
-C. Kermorvant - 2017
+G.Marquet 2017
 """
 
 import pickle
@@ -28,13 +28,13 @@ from sklearn.model_selection import cross_val_score
 from joblib import Parallel, delayed
 
 
-# Setup logging
+#region Setup logging
 logger = logging.getLogger('classify_images.py')
 logger.setLevel(logging.INFO)
 ch = logging.StreamHandler()
 ch.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
 logger.addHandler(ch)
-
+#endregion
 
 def image_loader(entry):
     path = entry[0]
@@ -105,6 +105,7 @@ def getOptimalK2(X, Y):
     plt.plot(ks,cv_scores)
     plt.ylabel('Accuracy')
     plt.xlabel('K value')
+    plt.title('Accuracy on testing & training set for different k values')
     plt.show()
 
     print("K = 5 seems to be the best value because of the high accuracy score & minimum error between the predictions on the test and validation set")
@@ -221,6 +222,7 @@ def extract_features_subresolution(img, clas, img_feature_size=(8, 8)):
     return FeatureClass([i for i in reduced_img.getdata()],clas)
 
 if __name__ == "__main__":
+
     #region define parser
     parser = argparse.ArgumentParser(
         description='Extract features, train a classifier on images and test the classifier')
@@ -293,7 +295,6 @@ if __name__ == "__main__":
         # convert to np.array
         featclass = np.array(data)
 
-    # save features
     if args.save_features:
         # convert X to dataframe with pd.DataFrame and save to pickle with to_pickle
 
@@ -350,7 +351,7 @@ if __name__ == "__main__":
                 X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
 
                 for p in percentage:
-                    num_samples.append(math.floor(len(X_train) / 100 * p))
+                    num_samples.append(int(math.floor(len(X_train) / 100 * p)))
                 accuracy_samples_test = []
                 accuracy_samples_train = []
 
@@ -383,7 +384,7 @@ if __name__ == "__main__":
             num_samples = []
 
             for p in percentage:
-                num_samples.append(len(X_test)*(p/100))
+                num_samples.append(int(len(X_test)*(p/100.0)))
             meanaccuracies = []
             stdaccuracies = []
             accuracies = []
@@ -394,7 +395,7 @@ if __name__ == "__main__":
                     print("Testing 10 times test set with " + str(percentage[i]) + " % samples from test set")
                     for y in range(0,10):
 
-                        X_nothing, X_test_temp, y_nothing, y_test_temp = train_test_split(X_test, y_test, test_size=percentage[i]/100)
+                        X_nothing, X_test_temp, y_nothing, y_test_temp = train_test_split(X_test, y_test, test_size=percentage[i]/100.0)
 
                         knn = neighbors.KNeighborsClassifier(kk, n_jobs=-1)
 
@@ -431,7 +432,7 @@ if __name__ == "__main__":
         X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
 
 
-        logreg = linear_model.LogisticRegression(n_jobs=-1)
+        logreg = linear_model.LogisticRegression()
 
         # we create an instance of Neighbours Classifier and fit the data.
         logreg.fit(X_train, y_train)
@@ -449,7 +450,7 @@ if __name__ == "__main__":
             X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
 
             for p in percentage:
-                num_samples.append(math.floor(len(X_train) / 100 * p))
+                num_samples.append(int(math.floor(len(X_train) / 100 * p)))
             accuracy_samples_test = []
             accuracy_samples_train = []
 
@@ -459,7 +460,7 @@ if __name__ == "__main__":
                 X_train_temp = X_train[:num_samples[i]]
                 y_train_temp = y_train[:num_samples[i]]
 
-                logreg = linear_model.LogisticRegression(n_jobs=-1)
+                logreg = linear_model.LogisticRegression()
 
                 # we create an instance of Neighbours Classifier and fit the data.
                 logreg.fit(X_train_temp, y_train_temp)
@@ -474,6 +475,7 @@ if __name__ == "__main__":
             plt.plot(num_samples, accuracy_samples_test)
             plt.ylabel('Accuracy')
             plt.xlabel('Train set size')
+            plt.title('Logistic regression training curve')
             plt.show()
 
         if args.testing_curve:
@@ -483,7 +485,7 @@ if __name__ == "__main__":
             X_train, X_test, y_train, y_test = train_test_split(X, Y, train_size=0.8)
 
             for p in percentage:
-                num_samples.append(p/100)
+                num_samples.append(p/100.0)
 
             meanaccuracies = []
             stdaccuracies = []
