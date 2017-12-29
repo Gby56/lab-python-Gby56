@@ -343,6 +343,7 @@ Standard deviation : 0.00667542707342
 
 ##### Plot the testing curves (mean accuracy) on a plot with error bars (standard deviation of the accuracy), for example using the pandas plot function
 Knn
+Erratum : these are test set sizes
 ![testcurveknn1](https://user-images.githubusercontent.com/6706472/34384285-8c8e4e7e-eb1b-11e7-85d0-b4ca1d290827.png)
 
 ![testcurveknn2](https://user-images.githubusercontent.com/6706472/34384286-8ca8a558-eb1b-11e7-89d5-372024709029.png)
@@ -350,7 +351,8 @@ Knn
 ![testcurveknn5](https://user-images.githubusercontent.com/6706472/34384287-8ccbb7c8-eb1b-11e7-8845-0e8ed63ba547.png)
 Logistic regression
 ![testcurvelog](https://user-images.githubusercontent.com/6706472/34384288-8ce76004-eb1b-11e7-98d8-99845b988a38.png)
-
+How do you see that the estimation of the accuracy is more accurate when the test set size increases ?
+We can definitely see the accuracy settling down on a mean value, and the error bars shrinking down, thus improving the accuracy of this estimation. 
 # Support Vector Machines
 
 ## Q9
@@ -474,4 +476,5 @@ None
 Accuracy : 0.294061171307
 on the second run : 0.29392401591
 ```
-
+We can see that the precision for the numbers 0, 1 and 6 are quite good, but the other numbers might be improved by increasing the features resolution (8x8 pixels might be too low for complex shapes like 9 or 8)
+We could also combine different classifiers if the confidence level is quite low for a certain image, and predict it again with a better classifier.
