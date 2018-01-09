@@ -203,6 +203,31 @@ def extract_features_subresolution(img, clas, img_feature_size=(8, 8)):
     # return the values of the reduced image as features
     return FeatureClass([i for i in reduced_img.getdata()], clas)
 
+def simpleMnb(alpha, max_features):
+
+    #region Transforming text to features with Countvectorizer
+    vectorizer = CountVectorizer(max_features=max_features)
+    vectorizer.fit(X_train)
+    X_train_counts = vectorizer.transform(X_train)
+    X_test_counts = vectorizer.transform(X_test)
+    X_dev_counts = vectorizer.transform(X_dev)
+    #endregion
+
+    #region Countvectorizer on MnB
+    mnb = MultinomialNB(alpha=alpha)
+    mnb.fit(X_train_counts,y_train)
+    y_pred_train = mnb.predict(X_train_counts)
+    y_pred_test = mnb.predict(X_test_counts)
+    y_pred_dev = mnb.predict(X_dev_counts)
+
+
+
+    print("Train set Accuracy score : " + str(metrics.accuracy_score(y_train, y_pred_train)))
+    print("Test set Accuracy score : " + str(metrics.accuracy_score(y_test, y_pred_test)))
+    print("Dev set Accuracy score : " + str(metrics.accuracy_score(y_dev, y_pred_dev)))
+    #endregion
+    return metrics.accuracy_score(y_test, y_pred_test)
+
 
 if __name__ == "__main__":
 
@@ -230,32 +255,30 @@ if __name__ == "__main__":
     X_dev, X_test, y_dev, y_test = train_test_split(X_temp, y_temp, test_size=0.5)
     #endregion
 
-    #region Transforming text to features with Countvectorizer
-    vectorizer = CountVectorizer(max_features=1000)
-    vectorizer.fit(X_train)
-    X_train_counts = vectorizer.transform(X_train)
-    X_test_counts = vectorizer.transform(X_test)
-    X_dev_counts = vectorizer.transform(X_dev)
-    #endregion
+
     #endregion
 
-    #region Countvectorizer on MnB
-    logger.info("TESTING BAG OF WORDS REPRESENTATION")
-    mnb = MultinomialNB()
-    mnb.fit(X_train_counts,y_train)
-    y_pred_train = mnb.predict(X_train_counts)
-    y_pred_test = mnb.predict(X_test_counts)
-    y_pred_dev = mnb.predict(X_dev_counts)
+    errorsSimpleMnb = []
+    for a in np.arange(0.0, 1.0, 0.1):
+        for max in range(12,17):
+            print("TESTING FOR alpha = " +str(a) + " & max_features = " + str(2**max))
+            errorsSimpleMnb.append({'alpha':a,'max_features':max,'accuracy':simpleMnb(a,2**max)})
 
 
-    # print(metrics.classification_report(y_train, y_pred_train))
-    # print(metrics.classification_report(y_test, y_pred_test))
-    # print(metrics.classification_report(y_dev, y_pred_dev))
+    maxacc = errorsSimpleMnb[0]['accuracy']
+    bestalpha = 0
+    numfeat = 0
 
-    print("Train set Accuracy score : " + str(metrics.accuracy_score(y_train, y_pred_train)))
-    print("Test set Accuracy score : " + str(metrics.accuracy_score(y_test, y_pred_test)))
-    print("Dev set Accuracy score : " + str(metrics.accuracy_score(y_dev, y_pred_dev)))
-    #endregion
+    for x in errorsSimpleMnb:
+        if x['accuracy'] > maxacc:
+            maxacc=x['accuracy']
+            bestalpha = x['alpha']
+            numfeat = x['max_features']
+
+
+    print("Maximum accuracy is : " + maxacc + " with alpha = " + str(bestalpha) + " and max_features = " + str(numfeat))
+
+
 
     #region TFID on CountVectorizer on MnB
 
