@@ -25,6 +25,7 @@ from sklearn import svm, metrics, neighbors, linear_model
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
 from joblib import Parallel, delayed
 
 # region Setup logging
@@ -227,5 +228,25 @@ if __name__ == "__main__":
     X_train, X_temp, y_train, y_temp = train_test_split(all_df.text, all_df.category, test_size=0.4)
     X_dev, X_test, y_dev, y_test = train_test_split(X_temp, y_temp, test_size=0.5)
 
-    CountVectorizer()
+    vectorizer = CountVectorizer(max_features=1000)
+    vectorizer.fit(X_train)
+    X_train_counts = vectorizer.transform(X_train)
+    X_test_counts = vectorizer.transform(X_test)
+    X_dev_counts = vectorizer.transform(X_dev)
+
+    mnb = MultinomialNB()
+    mnb.fit(X_train_counts,y_train)
+    y_pred_train = mnb.predict(X_train_counts)
+    y_pred_test = mnb.predict(X_test_counts)
+    y_pred_dev = mnb.predict(X_dev_counts)
+
+
+    print(metrics.classification_report(y_train, y_pred_train))
+    print(metrics.classification_report(y_test, y_pred_test))
+    print(metrics.classification_report(y_dev, y_pred_dev))
+
+    print("Train set Accuracy score : " + str(metrics.accuracy_score(y_train, y_pred_train)))
+    print("Test set Accuracy score : " + str(metrics.accuracy_score(y_test, y_pred_test)))
+    print("Dev set Accuracy score : " + str(metrics.accuracy_score(y_dev, y_pred_dev)))
+
     print("onche")
