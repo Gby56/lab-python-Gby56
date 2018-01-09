@@ -24,7 +24,7 @@ from sklearn.cluster import KMeans
 from sklearn import svm, metrics, neighbors, linear_model
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 from joblib import Parallel, delayed
 
@@ -206,10 +206,8 @@ def extract_features_subresolution(img, clas, img_feature_size=(8, 8)):
 
 if __name__ == "__main__":
 
-    all = []
-    # loaded_features = []
-    # all_df_temp = []
-
+    #region SETUP
+    #region reading data
     all_df = pd.read_csv("LeMonde2003.csv",sep='\t', header=0)
 
     all_df.dropna(axis=0,how='any',inplace=True)
@@ -225,15 +223,24 @@ if __name__ == "__main__":
     sns.countplot(x="category", data=all_df)
     plt.show()
 
+    #endregion
+
+    #region splitting data
     X_train, X_temp, y_train, y_temp = train_test_split(all_df.text, all_df.category, test_size=0.4)
     X_dev, X_test, y_dev, y_test = train_test_split(X_temp, y_temp, test_size=0.5)
+    #endregion
 
+    #region Transforming text to features with Countvectorizer
     vectorizer = CountVectorizer(max_features=1000)
     vectorizer.fit(X_train)
     X_train_counts = vectorizer.transform(X_train)
     X_test_counts = vectorizer.transform(X_test)
     X_dev_counts = vectorizer.transform(X_dev)
+    #endregion
+    #endregion
 
+    #region Countvectorizer on MnB
+    logger.info("TESTING BAG OF WORDS REPRESENTATION")
     mnb = MultinomialNB()
     mnb.fit(X_train_counts,y_train)
     y_pred_train = mnb.predict(X_train_counts)
@@ -241,12 +248,39 @@ if __name__ == "__main__":
     y_pred_dev = mnb.predict(X_dev_counts)
 
 
-    print(metrics.classification_report(y_train, y_pred_train))
-    print(metrics.classification_report(y_test, y_pred_test))
-    print(metrics.classification_report(y_dev, y_pred_dev))
+    # print(metrics.classification_report(y_train, y_pred_train))
+    # print(metrics.classification_report(y_test, y_pred_test))
+    # print(metrics.classification_report(y_dev, y_pred_dev))
 
     print("Train set Accuracy score : " + str(metrics.accuracy_score(y_train, y_pred_train)))
     print("Test set Accuracy score : " + str(metrics.accuracy_score(y_test, y_pred_test)))
     print("Dev set Accuracy score : " + str(metrics.accuracy_score(y_dev, y_pred_dev)))
+    #endregion
+
+    #region TFID on CountVectorizer on MnB
+
+    logger.info("TESTING TFID REPRESENTATION")
+    tf_transformer = TfidfTransformer().fit(X_train_counts)
+    X_train_tf = tf_transformer.transform(X_train_counts)
+    X_test_tf = tf_transformer.transform(X_test_counts)
+    X_dev_tf = tf_transformer.transform(X_dev_counts)
+
+    mnb = MultinomialNB()
+    mnb.fit(X_train_tf,y_train)
+    y_pred_train = mnb.predict(X_train_tf)
+    y_pred_test = mnb.predict(X_test_tf)
+    y_pred_dev = mnb.predict(X_dev_tf)
+
+
+    # print(metrics.classification_report(y_train, y_pred_train))
+    # print(metrics.classification_report(y_test, y_pred_test))
+    # print(metrics.classification_report(y_dev, y_pred_dev))
+
+    print("Train set Accuracy score : " + str(metrics.accuracy_score(y_train, y_pred_train)))
+    print("Test set Accuracy score : " + str(metrics.accuracy_score(y_test, y_pred_test)))
+    print("Dev set Accuracy score : " + str(metrics.accuracy_score(y_dev, y_pred_dev)))
+
+    #endregion
+
 
     print("onche")
