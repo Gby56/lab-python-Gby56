@@ -222,12 +222,15 @@ def simpleMnb(alpha, max_features):
 
 
 
-    print("Train set Accuracy score : " + str(metrics.accuracy_score(y_train, y_pred_train)))
-    print("Test set Accuracy score : " + str(metrics.accuracy_score(y_test, y_pred_test)))
-    print("Dev set Accuracy score : " + str(metrics.accuracy_score(y_dev, y_pred_dev)))
+    #print("Train set Accuracy score : " + str(metrics.accuracy_score(y_train, y_pred_train)))
+    #print("Test set Accuracy score : " + str(metrics.accuracy_score(y_test, y_pred_test)))
+    #print("Dev set Accuracy score : " + str(metrics.accuracy_score(y_dev, y_pred_dev)))
     #endregion
     return metrics.accuracy_score(y_test, y_pred_test)
 
+def MnBTuning(values):
+    #print("TESTING FOR alpha = " + str(values[0]) + " & max_features = " + str(2 ** values[1]))
+    return {'alpha':values[0],'max_features':2**values[1],'accuracy':simpleMnb(values[0],2**values[1])}
 
 if __name__ == "__main__":
 
@@ -258,11 +261,67 @@ if __name__ == "__main__":
 
     #endregion
 
-    errorsSimpleMnb = []
-    for a in np.arange(0.0, 1.0, 0.1):
-        for max in range(12,17):
-            print("TESTING FOR alpha = " +str(a) + " & max_features = " + str(2**max))
-            errorsSimpleMnb.append({'alpha':a,'max_features':max,'accuracy':simpleMnb(a,2**max)})
+    # errorsSimpleMnb=[{'max_features': 4096, 'alpha': 0.0, 'accuracy': 0.7768937510359688}, {'max_features': 8192, 'alpha': 0.0, 'accuracy': 0.79595557765622416}, {'max_features': 16384, 'alpha': 0.0, 'accuracy': 0.80706116360019886}, {'max_features': 32768, 'alpha': 0.0, 'accuracy': 0.80275153323388038}, {'max_features': 65536, 'alpha': 0.0, 'accuracy': 0.80043096303663186}, {'max_features': 4096, 'alpha': 0.10000000000000001, 'accuracy': 0.7767279960218797}, {'max_features': 8192, 'alpha': 0.10000000000000001, 'accuracy': 0.79297198740261898}, {'max_features': 16384, 'alpha': 0.10000000000000001, 'accuracy': 0.80573512348748555}, {'max_features': 32768, 'alpha': 0.10000000000000001, 'accuracy': 0.80987899883971493}, {'max_features': 65536, 'alpha': 0.10000000000000001, 'accuracy': 0.81667495441737115}, {'max_features': 4096, 'alpha': 0.20000000000000001, 'accuracy': 0.7768937510359688}, {'max_features': 8192, 'alpha': 0.20000000000000001, 'accuracy': 0.79230896734626222}, {'max_features': 16384, 'alpha': 0.20000000000000001, 'accuracy': 0.80225426819161283}, {'max_features': 32768, 'alpha': 0.20000000000000001, 'accuracy': 0.80706116360019886}, {'max_features': 65536, 'alpha': 0.20000000000000001, 'accuracy': 0.81418862920603352}, {'max_features': 4096, 'alpha': 0.30000000000000004, 'accuracy': 0.77656224100779048}, {'max_features': 8192, 'alpha': 0.30000000000000004, 'accuracy': 0.79164594728990556}, {'max_features': 16384, 'alpha': 0.30000000000000004, 'accuracy': 0.80109398309298852}, {'max_features': 32768, 'alpha': 0.30000000000000004, 'accuracy': 0.80639814354384221}, {'max_features': 65536, 'alpha': 0.30000000000000004, 'accuracy': 0.81335985413558765}, {'max_features': 4096, 'alpha': 0.40000000000000002, 'accuracy': 0.7767279960218797}, {'max_features': 8192, 'alpha': 0.40000000000000002, 'accuracy': 0.79098292723354879}, {'max_features': 16384, 'alpha': 0.40000000000000002, 'accuracy': 0.80043096303663186}, {'max_features': 32768, 'alpha': 0.40000000000000002, 'accuracy': 0.80590087850157466}, {'max_features': 65536, 'alpha': 0.40000000000000002, 'accuracy': 0.8140228741919443}, {'max_features': 4096, 'alpha': 0.5, 'accuracy': 0.7767279960218797}, {'max_features': 8192, 'alpha': 0.5, 'accuracy': 0.79065141720537047}, {'max_features': 16384, 'alpha': 0.5, 'accuracy': 0.7997679429802752}, {'max_features': 32768, 'alpha': 0.5, 'accuracy': 0.80507210343112878}, {'max_features': 65536, 'alpha': 0.5, 'accuracy': 0.81468589424830096}, {'max_features': 4096, 'alpha': 0.60000000000000009, 'accuracy': 0.7767279960218797}, {'max_features': 8192, 'alpha': 0.60000000000000009, 'accuracy': 0.78982264213492459}, {'max_features': 16384, 'alpha': 0.60000000000000009, 'accuracy': 0.79910492292391844}, {'max_features': 32768, 'alpha': 0.60000000000000009, 'accuracy': 0.80556936847339633}, {'max_features': 65536, 'alpha': 0.60000000000000009, 'accuracy': 0.81452013923421185}, {'max_features': 4096, 'alpha': 0.70000000000000007, 'accuracy': 0.77656224100779048}, {'max_features': 8192, 'alpha': 0.70000000000000007, 'accuracy': 0.78915962207856782}, {'max_features': 16384, 'alpha': 0.70000000000000007, 'accuracy': 0.79927067793800766}, {'max_features': 32768, 'alpha': 0.70000000000000007, 'accuracy': 0.80639814354384221}, {'max_features': 65536, 'alpha': 0.70000000000000007, 'accuracy': 0.81452013923421185}, {'max_features': 4096, 'alpha': 0.80000000000000004, 'accuracy': 0.77656224100779048}, {'max_features': 8192, 'alpha': 0.80000000000000004, 'accuracy': 0.78866235703630039}, {'max_features': 16384, 'alpha': 0.80000000000000004, 'accuracy': 0.79943643295209676}, {'max_features': 32768, 'alpha': 0.80000000000000004, 'accuracy': 0.80722691861428808}, {'max_features': 65536, 'alpha': 0.80000000000000004, 'accuracy': 0.81435438422012263}, {'max_features': 4096, 'alpha': 0.90000000000000002, 'accuracy': 0.77656224100779048}, {'max_features': 8192, 'alpha': 0.90000000000000002, 'accuracy': 0.78866235703630039}, {'max_features': 16384, 'alpha': 0.90000000000000002, 'accuracy': 0.79893916790982922}, {'max_features': 32768, 'alpha': 0.90000000000000002, 'accuracy': 0.80689540858610975}, {'max_features': 65536, 'alpha': 0.90000000000000002, 'accuracy': 0.81435438422012263}]
+    # [{'max_features': 32768, 'alpha': 0.0001, 'accuracy': 0.81037626388198247},
+    #  {'max_features': 65536, 'alpha': 0.0001, 'accuracy': 0.81269683407923088},
+    #  {'max_features': 131072, 'alpha': 0.0001, 'accuracy': 0.81468589424830096},
+    #  {'max_features': 262144, 'alpha': 0.0001, 'accuracy': 0.81468589424830096},
+    #  {'max_features': 524288, 'alpha': 0.0001, 'accuracy': 0.81468589424830096},
+    #  {'max_features': 32768, 'alpha': 0.10010000000000001, 'accuracy': 0.80971324382562571},
+    #  {'max_features': 65536, 'alpha': 0.10010000000000001, 'accuracy': 0.81203381402287422},
+    #  {'max_features': 131072, 'alpha': 0.10010000000000001, 'accuracy': 0.8140228741919443},
+    #  {'max_features': 262144, 'alpha': 0.10010000000000001, 'accuracy': 0.8140228741919443},
+    #  {'max_features': 524288, 'alpha': 0.10010000000000001, 'accuracy': 0.8140228741919443},
+    #  {'max_features': 32768, 'alpha': 0.2001, 'accuracy': 0.80606663351566388},
+    #  {'max_features': 65536, 'alpha': 0.2001, 'accuracy': 0.81021050886789325},
+    #  {'max_features': 131072, 'alpha': 0.2001, 'accuracy': 0.81319409912149843},
+    #  {'max_features': 262144, 'alpha': 0.2001, 'accuracy': 0.81319409912149843},
+    #  {'max_features': 524288, 'alpha': 0.2001, 'accuracy': 0.81319409912149843},
+    #  {'max_features': 32768, 'alpha': 0.30010000000000003, 'accuracy': 0.80623238852975299},
+    #  {'max_features': 65536, 'alpha': 0.30010000000000003, 'accuracy': 0.80971324382562571},
+    #  {'max_features': 131072, 'alpha': 0.30010000000000003, 'accuracy': 0.81369136416376597},
+    #  {'max_features': 262144, 'alpha': 0.30010000000000003, 'accuracy': 0.81369136416376597},
+    #  {'max_features': 524288, 'alpha': 0.30010000000000003, 'accuracy': 0.81369136416376597},
+    #  {'max_features': 32768, 'alpha': 0.40010000000000001, 'accuracy': 0.80590087850157466},
+    #  {'max_features': 65536, 'alpha': 0.40010000000000001, 'accuracy': 0.81004475385380403},
+    #  {'max_features': 131072, 'alpha': 0.40010000000000001, 'accuracy': 0.8140228741919443},
+    #  {'max_features': 262144, 'alpha': 0.40010000000000001, 'accuracy': 0.8140228741919443},
+    #  {'max_features': 524288, 'alpha': 0.40010000000000001, 'accuracy': 0.8140228741919443},
+    #  {'max_features': 32768, 'alpha': 0.50009999999999999, 'accuracy': 0.80556936847339633},
+    #  {'max_features': 65536, 'alpha': 0.50009999999999999, 'accuracy': 0.80987899883971493},
+    #  {'max_features': 131072, 'alpha': 0.50009999999999999, 'accuracy': 0.81468589424830096},
+    #  {'max_features': 262144, 'alpha': 0.50009999999999999, 'accuracy': 0.81468589424830096},
+    #  {'max_features': 524288, 'alpha': 0.50009999999999999, 'accuracy': 0.81468589424830096},
+    #  {'max_features': 32768, 'alpha': 0.60010000000000008, 'accuracy': 0.80623238852975299},
+    #  {'max_features': 65536, 'alpha': 0.60010000000000008, 'accuracy': 0.81004475385380403},
+    #  {'max_features': 131072, 'alpha': 0.60010000000000008, 'accuracy': 0.8140228741919443},
+    #  {'max_features': 262144, 'alpha': 0.60010000000000008, 'accuracy': 0.8140228741919443},
+    #  {'max_features': 524288, 'alpha': 0.60010000000000008, 'accuracy': 0.8140228741919443},
+    #  {'max_features': 32768, 'alpha': 0.70010000000000006, 'accuracy': 0.80639814354384221},
+    #  {'max_features': 65536, 'alpha': 0.70010000000000006, 'accuracy': 0.81037626388198247},
+    #  {'max_features': 131072, 'alpha': 0.70010000000000006, 'accuracy': 0.81369136416376597},
+    #  {'max_features': 262144, 'alpha': 0.70010000000000006, 'accuracy': 0.81369136416376597},
+    #  {'max_features': 524288, 'alpha': 0.70010000000000006, 'accuracy': 0.81369136416376597},
+    #  {'max_features': 32768, 'alpha': 0.80010000000000003, 'accuracy': 0.80656389855793142},
+    #  {'max_features': 65536, 'alpha': 0.80010000000000003, 'accuracy': 0.81037626388198247},
+    #  {'max_features': 131072, 'alpha': 0.80010000000000003, 'accuracy': 0.81269683407923088},
+    #  {'max_features': 262144, 'alpha': 0.80010000000000003, 'accuracy': 0.81269683407923088},
+    #  {'max_features': 524288, 'alpha': 0.80010000000000003, 'accuracy': 0.81269683407923088},
+    #  {'max_features': 32768, 'alpha': 0.90010000000000001, 'accuracy': 0.80689540858610975},
+    #  {'max_features': 65536, 'alpha': 0.90010000000000001, 'accuracy': 0.81054201889607158},
+    #  {'max_features': 131072, 'alpha': 0.90010000000000001, 'accuracy': 0.81269683407923088},
+    #  {'max_features': 262144, 'alpha': 0.90010000000000001, 'accuracy': 0.81269683407923088},
+    #  {'max_features': 524288, 'alpha': 0.90010000000000001, 'accuracy': 0.81269683407923088}]
+
+    combinations = []
+    for a in np.arange(0.0001, 1.0, 0.1):
+        for max in range(10,21):
+            combinations.append([a,max])
+
+    # Multi-core feature extraction.
+    errorsSimpleMnb = Parallel(n_jobs=multiprocessing.cpu_count())(
+        delayed(MnBTuning)(entry) for entry in tqdm(combinations))
+
 
 
     maxacc = errorsSimpleMnb[0]['accuracy']
@@ -275,8 +334,8 @@ if __name__ == "__main__":
             bestalpha = x['alpha']
             numfeat = x['max_features']
 
-
-    print("Maximum accuracy is : " + maxacc + " with alpha = " + str(bestalpha) + " and max_features = " + str(numfeat))
+    print(str(errorsSimpleMnb))
+    print("Maximum accuracy is : " + str(maxacc) + " with alpha = " + str(bestalpha) + " and max_features = " + str(numfeat))
 
 
 
