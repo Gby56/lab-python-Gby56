@@ -161,9 +161,7 @@ if __name__ == "__main__":
         data = Parallel(n_jobs=multiprocessing.cpu_count())(
             delayed(image_loader)(image) for image in tqdm(images_path_list))
 
-    if not data.size>0:
-        logger.error("Could not extract any feature vector")
-        sys.exit(1)
+
 
 
     # convert to np array (default format for scikit-learn)

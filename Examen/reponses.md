@@ -34,3 +34,5 @@ The --opt works for the KNN and tests values from 1 to 9 for k, giving the accur
 The SVC is simple, C is by default 1, degree 3 and gamma is set to auto, there is still a possibility for an --opt option and doing a cross validation
 with several folds to tune it
 
+## Results
+KNN gets 94% precision with k = 1 and SVC 88%
